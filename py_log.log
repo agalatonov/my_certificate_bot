@@ -1,0 +1,6 @@
+2024-11-25 14:16:46,911 INFO Start polling
+2024-11-25 14:16:47,101 INFO Run polling for bot @ra_wakepark_dev_bot id=7363003489 - 'wake_park_dev'
+2024-11-25 14:17:02,668 INFO Update id=160547638 is handled. Duration 390 ms by bot id=7363003489
+2024-11-25 14:17:10,198 INFO Update id=160547639 is not handled. Duration 0 ms by bot id=7363003489
+2024-11-25 14:22:27,566 INFO Polling stopped
+2024-11-25 14:22:27,824 INFO Polling stopped for bot @ra_wakepark_dev_bot id=7363003489 - 'wake_park_dev'

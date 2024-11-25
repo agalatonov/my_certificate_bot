@@ -4,9 +4,9 @@ import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from dotenv import load_dotenv
-from aiogram.types import ReplyKeyboardRemove, \
-    ReplyKeyboardMarkup, KeyboardButton, \
-    InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram import F
 
 
 load_dotenv()
@@ -20,18 +20,26 @@ bot = Bot(token=env_token)
 dp = Dispatcher()
 
 button_download_tamplate = KeyboardButton(text='Загрузить шаблон сертификата')
+buttons = [button_download_tamplate]
 main_kb = ReplyKeyboardMarkup(
-    keyboard=button_download_tamplate, 
+    keyboard=[buttons], 
     resize_keyboard=True
     )
-
 
 # Хэндлер на команду /start
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     await message.answer("Hello!", reply_markup=main_kb)
 
-@bot.answer_callback_query
+@dp.message(F.photo)
+async def get_photo(message: types.Message):
+    image_id = message.photo[-1].file_id
+    file_path = (await bot.get_file(image_id)).file_path
+    downloaded_file = await bot.download_file(file_path)
+    save_path = os.getenv('CERTIFICATE_BASE_PATH')
+    with open(save_path, 'wb') as new_file:
+        new_file.write(downloaded_file.getvalue())
+    await message.reply('Шаблон сертификата сохранен')
 
 # Запуск процесса поллинга новых апдейтов
 async def main():
